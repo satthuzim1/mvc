@@ -25,7 +25,6 @@ class UserUpdateController extends BaseController
         //lay type img
         $remove_special_character = preg_replace('/[^A-Za-z0-9\-.^]/', '', $_FILES['avatar']['name']);
         $arr[] = array_reverse(explode('.', filter_var(trim($remove_special_character, '.'))));
-        if($_FILES['avatar']['size'] < 15728640){
             if ($id && $password) {
                 if ($password_check > 0) {
                     if (isset($_FILES['avatar'])) {
@@ -53,8 +52,5 @@ class UserUpdateController extends BaseController
             } else {
                 echo 'Pls fulfill all field!';
             }
-        }else{
-            echo 'Require file size < 15 mb';
-        }
     }
 }
