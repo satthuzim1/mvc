@@ -5,13 +5,13 @@ class UserUpdateController extends BaseController
 
     public static function backToDetail()
     {
-        header('Location: http://localhost/mvc1/UserDetailController/getUserList');
+        header('Location: https://workhom.000webhostapp.com/UserDetailController/getUserList');
     }
 
     public static function getInfoUser($id)
     {
         $var = self::model('UserModel')->getUserDetail($id);
-        return self::view('update', [
+        return self::view('Update', [
             'id' => $var['id'],
             'username' => $var['username'],
         ]);
@@ -23,7 +23,8 @@ class UserUpdateController extends BaseController
         $password = (string)$_POST['password'];
         $password_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $password);
         //lay type img
-        $arr[] = array_reverse(explode('.', filter_var(trim($_FILES['avatar']['name'], '.'))));
+        $remove_special_character = preg_replace('/[^A-Za-z0-9\-.^]/', '', $_FILES['avatar']['name']);;
+        $arr[] = array_reverse(explode('.', filter_var(trim($remove_special_character, '.'))));
         if ($id && $password) {
             if ($password_check > 0) {
                 if (isset($_FILES['avatar'])) {
@@ -32,12 +33,12 @@ class UserUpdateController extends BaseController
                     if ($_FILES['avatar']['error'] > 0) {
                         echo 'File Upload Bị Lỗi';
                     } else {
-                        //update user text
+                        //update user's img_name
                         $var = self::model('UserModel')->updateUser($id, $password, $id . '.' . $arr[0][0]);
                         if ($var['stt'] == true) {
                             // Upload file
                             move_uploaded_file($_FILES['avatar']['tmp_name'], './image/' . $var['id'] . '.' . $arr[0][0]);
-                            return header("Location: http://localhost/mvc1/UserDetailController/getUserList");
+                            return header("Location: https://workhom.000webhostapp.com/UserDetailController/getUserList");
                         } else {
                             echo 'update fail';
                         }
