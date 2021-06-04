@@ -23,14 +23,14 @@ class UserUpdateController extends BaseController
         $password = (string)$_POST['password'];
         $password_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $password);
         //lay type img
-        $remove_special_character = preg_replace('/[^A-Za-z0-9\-.^]/', '', $_FILES['avatar']['name']);;
+        $remove_special_character = preg_replace('/[^A-Za-z0-9\-.^]/', '', $_FILES['avatar']['name']);
         $arr[] = array_reverse(explode('.', filter_var(trim($remove_special_character, '.'))));
         if ($id && $password) {
             if ($password_check > 0) {
                 if (isset($_FILES['avatar'])) {
                     // Nếu file upload không bị lỗi,
                     // Tức là thuộc tính error > 0
-                    if ($_FILES['avatar']['error'] > 0) {
+                    if ($_FILES['avatar']['error'] > 0 && S_FILES['avatar']['size'] > 15728640) {
                         echo 'File Upload Bị Lỗi';
                     } else {
                         //update user's img_name
